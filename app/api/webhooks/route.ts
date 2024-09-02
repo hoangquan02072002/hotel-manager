@@ -1,4 +1,4 @@
-import { createBooking } from "@/libs/apis";
+import { createBooking, updateHotelRoom } from "@/libs/apis";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -23,8 +23,9 @@ export async function POST(req: Request, res: Response) {
   switch (event.type) {
     case checkout_session_completed:
       const session = event.data.object;
+      const metadata = session.metadata
+      if (!metadata) return new NextResponse('"Metadata is missing", { status: 400 }');
       const {
-        metadata: {
           adults,
           checkinDate,
           checkoutDate,
@@ -34,8 +35,7 @@ export async function POST(req: Request, res: Response) {
           user,
           discount,
           totalPrice,
-        },
-      } = session;
+      } = metadata;
       await createBooking({
         adults: Number(adults),
         checkinDate,
@@ -49,7 +49,7 @@ export async function POST(req: Request, res: Response) {
       });
 
       //   Update hotel Room
-      // await updateHotelRoom(hotelRoom);
+      await updateHotelRoom(hotelRoom);
 
       return NextResponse.json("Booking Successful", {
         status: 200,
@@ -64,3 +64,5 @@ export async function POST(req: Request, res: Response) {
     statusText: "Event Received",
   });
 }
+
+
