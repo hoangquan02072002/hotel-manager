@@ -13,7 +13,7 @@ const {darkTheme, setDarkTheme} = useContext(ThemeContext);
 const { data: session } = useSession();
 console.log("user",session)
   return (
-    <header className="py-10 px-4 container mx-auto text-xl flex flex-wrap md:flex-nowrap items-center justify-between">
+    <header className="container flex flex-wrap justify-between items-center px-4 py-10 mx-auto text-xl md:flex-nowrap">
       <div className="flex items-center w-full md:2/3">
         <Link href="/" className="font-black text-tertiary-light">
           Hotel
@@ -22,8 +22,8 @@ console.log("user",session)
           <li className="flex items-center">
             {session?.user ? (
               <Link href={`/users/${session.user.id}`}>
-                {session.user.image ? (<div className="w-10 h-10 rounded-full overflow-hidden">
-                  <Image src={session.user.image} alt={session.user.name} width={40} height={40} className="img scale-animation"/>
+                {session.user.image ? (<div className="overflow-hidden w-10 h-10 rounded-full">
+                  <Image src={session.user.image} alt={session.user.name ?? 'User'} width={40} height={40} className="img scale-animation"/>
                 </div>) : (<FaUserCircle className="cursor-pointer" />)}
             </Link>
             ) : (
@@ -51,14 +51,14 @@ console.log("user",session)
           </li>
         </ul>
       </div>
-      <ul className="flex items-center justify-between w-full md:w-1/3 mt-4">
-        <li className="hover:translate-y-2 duration-500 transition-all">
+      <ul className="flex justify-between items-center mt-4 w-full md:w-1/3">
+        <li className="transition-all duration-500 hover:translate-y-2">
           <Link href="/"> Home</Link>
         </li>
-        <li className="hover:translate-y-2 duration-500 transition-all">
+        <li className="transition-all duration-500 hover:translate-y-2">
           <Link href="/rooms"> Rooms</Link>
         </li>
-        <li className="hover:translate-y-2 duration-500 transition-all">
+        <li className="transition-all duration-500 hover:translate-y-2">
           <Link href="/"> Contact</Link>
         </li>
       </ul>
